@@ -21,7 +21,7 @@ public class LibraryManagerSpringAngularApplication {
 //            Faker faker = new Faker();
 //
 //
-//            for(int i=1;i<=100;i++){
+//            for(int i=1;i<=10;i++){
 //                Book b=new Book(faker.book().title(),faker.book().author(),faker.book().genre(),(int)(Math.floor(Math.random()*2000+1000)));
 //
 //                 bookRepository.save(b);
