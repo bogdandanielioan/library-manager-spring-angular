@@ -3,6 +3,7 @@ import {BookService} from "../service/book.service";
 import {Book} from "../book/book.model";
 import {Router} from "@angular/router";
 import {NotificationService} from "../service/notification.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,10 @@ import {NotificationService} from "../service/notification.service";
 })
 export class HomeComponent implements OnInit {
 
+
   books: Book[] = [];
+
+  subscription: Subscription | undefined;
 
   constructor(private bookService: BookService, private router: Router, private notificationService: NotificationService) {
 
@@ -19,8 +23,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
     this.bookService.getBooks().subscribe(
       (response) => {
         console.log(response);
@@ -31,6 +33,11 @@ export class HomeComponent implements OnInit {
       (error: any) => this.notificationService.onError(error.message),
       () => console.log('Done getting users')
     );
+    this.subscription=this.bookService.booksChanged.subscribe(
+      (books: Book[]) => {
+        this.books = books;
+      }
+    )
   }
 
 

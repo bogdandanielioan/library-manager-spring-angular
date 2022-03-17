@@ -13,7 +13,6 @@ export class BookService {
   private server = environment.apiUrl+"/api/v1";
   booksChanged= new Subject<Book[]>();
 
-
   private books:Book[]=[];
 
   constructor(private http:HttpClient) { }
