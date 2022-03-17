@@ -17,8 +17,8 @@ env:
   DOCKER_HUB_USERNAME: bogdandanielioan
   # AWS & Elastic Bean Stalk
   AWS_REGION: eu-west-1
-  EB_ENVIRONMENT_NAME: online-school
-  EB_APPLICATION_NAME: online-school
+  EB_ENVIRONMENT_NAME: library-manager-spring-angular
+  EB_APPLICATION_NAME: library-manager-spring-angular
   EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
 jobs:
   deploy:
@@ -68,7 +68,7 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took
-          text: ':white_check_mark: pushed bogdandanielioan/online-school:${{steps.build-number.outputs.BUILD_NUMBER}} to docker hub... https://hub.docker.com/repository/docker/bogdandanielioan/library-manager-spring-angular'
+          text: ':white_check_mark: pushed bogdandanielioan/library-manager-spring-angular:${{steps.build-number.outputs.BUILD_NUMBER}} to docker hub... https://hub.docker.com/repository/docker/bogdandanielioan/library-manager-spring-angular'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       - name: Update and commit app version in docker-compose.yaml

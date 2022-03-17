@@ -3,13 +3,14 @@ import {Book} from "./book.model";
 import {catchError, Observable, Subject, tap, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../interface/custom-http-response";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookService {
 
-  private readonly server='http://localhost:8080/api/v1'
+  private server = environment.apiUrl+"/api/v1";
   booksChanged= new Subject<Book[]>();
 
   private books:Book[]=[
