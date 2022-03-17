@@ -8,6 +8,10 @@ import ro.library.librarymanagerspringangular.model.Book;
 import ro.library.librarymanagerspringangular.model.HttpResponse;
 import ro.library.librarymanagerspringangular.repository.BookRepository;
 
+import java.util.Collections;
+
+import static org.springframework.http.HttpStatus.CREATED;
+
 @Service
 @Slf4j
 public class BookService {
@@ -19,16 +23,23 @@ public class BookService {
     }
 
     public HttpResponse<Book> getBooks(){
-
         log.info("Fetching all the books from database");
-
         return   HttpResponse.<Book>builder()
                 .books(this.bookRepository.findAll())
                 .message(bookRepository.count()>0?bookRepository.count()+" books retrieved ":"No books")
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())
                 .build();
-
     }
+    public  HttpResponse<Book> saveBook(Book book){
+         log.info("Saving new book  to the database");
+         return HttpResponse.<Book>builder()
+                 .books(Collections.singleton(this.bookRepository.save(book)))
+                 .message("Book created ")
+                 .statusCode(CREATED.value())
+                 .build();
+    }
+
+
 
 }

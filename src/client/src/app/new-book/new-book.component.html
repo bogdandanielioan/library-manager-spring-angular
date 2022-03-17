@@ -1,5 +1,5 @@
 <h1>New Book</h1>
-<form [formGroup]="bookForm">
+<form [formGroup]="bookForm" >
   <p>
     <label for="title">Title</label>
     <input name="title" type="text" id="title" formControlName="title">
@@ -17,7 +17,7 @@
     <input name="year" type="text" id="year"  formControlName="year">
   </p>
   <p>
-    <a class="button" (click)="onCreate()">Create New Book</a>
+    <a class="button" (click)="onCreate()" >Create New Book</a>
   </p>
   <p>
     <a class="button" (click)="onCancel()">Cancel</a>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Book} from "./book.model";
+import {Book} from "../book/book.model";
 import {catchError, Observable, Subject, tap, throwError} from "rxjs";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {CustomHttpResponse} from "../interface/custom-http-response";
@@ -13,13 +13,9 @@ export class BookService {
   private server = environment.apiUrl+"/api/v1";
   booksChanged= new Subject<Book[]>();
 
-  private books:Book[]=[
-    new Book("The Hunger Games","Suzanne Collins","Fantasy",2008),
-    new Book("Catching Fire","Suzanne Collins","Fantasy",2008),
-    new Book("Mockingjay","Suzanne Collins","Fantasy",2008),
-    new Book("A Brief History of Time","Suzanne Collins","Fantasy",2008),
-    new Book("The Hunger Games","Suzanne Collins","Fantasy",2008),
-  ]
+
+  private books:Book[]=[];
+
   constructor(private http:HttpClient) { }
   getBooks():Observable<CustomHttpResponse>{
     return this.http.get<CustomHttpResponse>(this.server+"/books").pipe(
@@ -27,13 +23,12 @@ export class BookService {
     )
   }
 
-  addBook(book:Book){
+
+  addBook(book:Book):Observable<Book>{
     this.books.push(book);
     this.booksChanged.next(this.books.slice());
+    return this.http.post<Book>(this.server+"/books/add",book);
   }
-
-
-
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
     let errorMessage: string;
@@ -48,12 +43,5 @@ export class BookService {
     }
     return throwError(errorMessage);
   }
-
-
-
-   ceva():void{
-
-  }
-
 
 }
