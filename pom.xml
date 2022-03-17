@@ -151,51 +151,29 @@
             </build>
         </profile>
         <profile>
-            <id>jib-push-to-local</id>
+            <id>build-frontend</id>
             <activation>
-                <activeByDefault>false</activeByDefault>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>com.google.cloud.tools</groupId>
-                        <artifactId>jib-maven-plugin</artifactId>
-                        <version>2.5.2</version>
-                        <configuration>
-                            <from>
-                                <image>openjdk:15</image>
-                            </from>
-                            <container>
-                                <ports>
-                                    <port>8080</port>
-                                </ports>
-                                <format>OCI</format>
-                            </container>
-                        </configuration>
+                        <artifactId>maven-resources-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>push-custom-tag</id>
-                                <phase>package</phase>
-                                <configuration>
-                                    <to>
-                                        <image>bogdandanielioan/${app.image.name}:${app.image.tag}</image>
-                                    </to>
-                                </configuration>
+                                <id>copy-build-folder</id>
+                                <phase>process-classes</phase>
                                 <goals>
-                                    <goal>dockerBuild</goal>
+                                    <goal>copy-resources</goal>
                                 </goals>
-                            </execution>
-                            <execution>
-                                <id>push-latest-tag</id>
-                                <phase>package</phase>
                                 <configuration>
-                                    <to>
-                                        <image>bogdandanielioan/${app.image.name}:${app.image.tag}</image>
-                                    </to>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/client/dist/client</directory>
+                                        </resource>
+                                    </resources>
+                                    <outputDirectory>src/main/resources/static</outputDirectory>
                                 </configuration>
-                                <goals>
-                                    <goal>dockerBuild</goal>
-                                </goals>
                             </execution>
                         </executions>
                     </plugin>

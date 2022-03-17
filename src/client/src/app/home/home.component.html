@@ -1,0 +1,15 @@
+<h1>Books</h1>
+<p><a class="button" (click)="onClick()" >Create New Book</a></p>
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Genre</th>
+    <th>Year</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr class="book" *ngFor="let book of books" [book]="book"></tr>
+  </tbody>
+</table>
