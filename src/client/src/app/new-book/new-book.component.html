@@ -1,24 +1,40 @@
-<h1>New Book</h1>
-<form [formGroup]="bookForm" >
+
+
+<h1 *ngIf="!editMode; then thenBlock else elseBlock"></h1>
+<ng-template #thenBlock><h1>New Book</h1></ng-template>
+<ng-template #elseBlock><h1>Update Book</h1></ng-template>
+
+
+<form [formGroup]="bookForm">
   <p>
     <label for="title">Title</label>
     <input name="title" type="text" id="title" formControlName="title">
   </p>
   <p>
     <label for="author">Author</label>
-    <input name="author" type="text" id="author"  formControlName="author">
+    <input name="author" type="text" id="author" formControlName="author">
   </p>
   <p>
     <label for="genre">Genre</label>
-    <input name="genre" type="text" id="genre"  formControlName="genre">
+    <input name="genre" type="text" id="genre" formControlName="genre">
   </p>
   <p>
     <label for="year">Year</label>
-    <input name="year" type="text" id="year"  formControlName="year">
+    <input name="year" type="text" id="year" formControlName="year">
   </p>
-  <p>
-    <a class="button" (click)="onCreate()" >Create New Book</a>
-  </p>
+  <div *ngIf="!editMode; then newBlock else updateBlock"></div>
+  <ng-template #newBlock>
+    <p>
+      <a class="button" (click)="onCreate()">Create New Book</a>
+    </p>
+
+  </ng-template>
+  <ng-template #updateBlock>
+    <p>
+      <input type="submit" value="Update Book">
+    </p>
+    <p><input type="submit" value="Delete Book"></p>
+  </ng-template>
   <p>
     <a class="button" (click)="onCancel()">Cancel</a>
   </p>

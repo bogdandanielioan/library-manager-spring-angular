@@ -1,16 +1,18 @@
 package ro.library.librarymanagerspringangular.services;
 
-import com.mysql.cj.x.protobuf.Mysqlx;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import ro.library.librarymanagerspringangular.exceptions.BookNotFoundException;
 import ro.library.librarymanagerspringangular.model.Book;
 import ro.library.librarymanagerspringangular.model.HttpResponse;
 import ro.library.librarymanagerspringangular.repository.BookRepository;
 
-import java.util.Collections;
+import java.util.Optional;
 
+import static java.util.Collections.singleton;
+import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @Slf4j
@@ -27,18 +29,30 @@ public class BookService {
         return   HttpResponse.<Book>builder()
                 .books(this.bookRepository.findAll())
                 .message(bookRepository.count()>0?bookRepository.count()+" books retrieved ":"No books")
-                .status(HttpStatus.OK)
-                .statusCode(HttpStatus.OK.value())
+                .status(OK)
+                .statusCode(OK.value())
                 .build();
     }
     public  HttpResponse<Book> saveBook(Book book){
          log.info("Saving new book  to the database");
          return HttpResponse.<Book>builder()
-                 .books(Collections.singleton(this.bookRepository.save(book)))
+                 .books(singleton(this.bookRepository.save(book)))
                  .message("Book created ")
                  .statusCode(CREATED.value())
                  .build();
     }
+    public HttpResponse<Book> getBookById(Long id) throws BookNotFoundException {
+        Optional<Book> optionalNote = ofNullable(bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("The book was not found on the server")));
+        return HttpResponse.<Book>builder()
+                .books(singleton(optionalNote.get()))
+                .message("Retrived book successdully")
+                .status(OK)
+                .statusCode(OK.value())
+                .build();
+    }
+
+
 
 
 

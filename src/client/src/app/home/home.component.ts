@@ -20,26 +20,30 @@ export class HomeComponent implements OnInit {
   constructor(private bookService: BookService, private router: Router, private notificationService: NotificationService) {
 
     this.books = [];
+
   }
 
   ngOnInit(): void {
     this.bookService.getBooks().subscribe(
       (response) => {
-        console.log(response);
         // @ts-ignore
         this.books = response.books;
         this.notificationService.onSuccess(response.message);
+        this.bookService.booksChanged.next(this.books);
       },
-      (error: any) => this.notificationService.onError(error.message),
-      () => console.log('Done getting users')
-    );
-    this.subscription=this.bookService.booksChanged.subscribe(
-      (books: Book[]) => {
-        this.books = books;
+      (error: any) => this.notificationService.onError(error.reason),
+      () => {
+        console.log("done getting users");
+        console.log(this.bookService);
       }
-    )
-  }
+    );
+    // this.subscription=this.bookService.booksChanged.subscribe(
+    //   (books: Book[]) => {
+    //     this.books = books;
+    //   }
+    // )
 
+  }
 
   onClick() {
     // @ts-ignore

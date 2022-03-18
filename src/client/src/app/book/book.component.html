@@ -1,6 +1,6 @@
 
   <td>
-    <a href="book_detail.html">{{book.title}}</a>
+    <a [routerLink]="[book.id]"  routerLinkActive="active">{{book.title}}</a>
   </td>
   <td>{{book.author}}</td>
   <td>{{book.genre}}</td>

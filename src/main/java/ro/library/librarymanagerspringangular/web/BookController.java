@@ -3,6 +3,7 @@ package ro.library.librarymanagerspringangular.web;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ro.library.librarymanagerspringangular.exceptions.BookNotFoundException;
 import ro.library.librarymanagerspringangular.model.Book;
 import ro.library.librarymanagerspringangular.model.HttpResponse;
 import ro.library.librarymanagerspringangular.services.BookService;
@@ -29,7 +30,11 @@ public class BookController {
         return ResponseEntity.created(
                 URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/book/add").toUriString())
         ).body(bookService.saveBook(book));
-
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<HttpResponse<Book>> getBook(@PathVariable(value = "id") Long id) throws BookNotFoundException {
+        return ResponseEntity.ok().body(bookService.getBookById(id));
+    }
+
 
 }
