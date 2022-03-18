@@ -36,5 +36,9 @@ public class BookController {
         return ResponseEntity.ok().body(bookService.getBookById(id));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<HttpResponse<Book>> updateNote(@RequestBody @Valid Book book) throws BookNotFoundException {
+        return ResponseEntity.ok().body(bookService.updateNote(book));
+    }
 
 }

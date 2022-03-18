@@ -93,10 +93,21 @@ export class NewBookComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+
+  validFormCheck(){
+    for (let e in this.bookForm.value) {
+      if (this.bookForm.value[e] == null) {
+        this.notificationService.onError(e + " is required ");
+      }
+    }
+    if (this.bookForm.value['year'] != null && this.bookForm.value['year'].match(/^[1-9]+[0-9]*$/) == null) {
+      this.notificationService.onError("year must be a number")
+    }
+
+  }
+
   onCreate() {
     if (this.bookForm.valid == true) {
-
-
       this.bookService.addBook(this.bookForm.value).subscribe(
         (response) => {
           console.log(response);
@@ -104,14 +115,12 @@ export class NewBookComponent implements OnInit {
           this.notificationService.onSuccess(response.message);
         },
         (error: any) => this.notificationService.onError(error.message),
-        () => console.log('Done adding user')
+        () => console.log('Done adding book')
       );
-
-
       this.router.navigate(['/']);
-
-
     } else {
+
+
       for (let e in this.bookForm.value) {
         if (this.bookForm.value[e] == null) {
           this.notificationService.onError(e + " is required ");
@@ -122,5 +131,30 @@ export class NewBookComponent implements OnInit {
       }
 
     }
+  }
+
+  onUpdate(){
+      if (this.bookForm.valid == true) {
+        this.bookService.updateBook(this.bookForm.value,this.id).subscribe(
+          (response) => {
+            console.log(response);
+            // @ts-ignore
+            this.notificationService.onSuccess(response.message);
+          },
+          (error: any) => this.notificationService.onError(error.message),
+          () => console.log('Done updating book')
+        );
+        this.router.navigate(['/']);
+      } else {
+        for (let e in this.bookForm.value) {
+          if (this.bookForm.value[e] == "") {
+            this.notificationService.onError(e + " is required ");
+          }
+        }
+        if (this.bookForm.value['year'] != "" && this.bookForm.value['year'].match(/^[1-9]+[0-9]*$/) == null) {
+          this.notificationService.onError("year must be a number")
+        }
+
+      }
   }
 }

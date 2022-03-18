@@ -33,6 +33,7 @@ public class BookService {
                 .statusCode(OK.value())
                 .build();
     }
+
     public  HttpResponse<Book> saveBook(Book book){
          log.info("Saving new book  to the database");
          return HttpResponse.<Book>builder()
@@ -41,12 +42,33 @@ public class BookService {
                  .statusCode(CREATED.value())
                  .build();
     }
+
     public HttpResponse<Book> getBookById(Long id) throws BookNotFoundException {
         Optional<Book> optionalNote = ofNullable(bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException("The book was not found on the server")));
         return HttpResponse.<Book>builder()
                 .books(singleton(optionalNote.get()))
                 .message("Retrived book successdully")
+                .status(OK)
+                .statusCode(OK.value())
+                .build();
+    }
+
+    public HttpResponse<Book> updateNote(Book book) throws BookNotFoundException {
+        log.info("Updating book to the database");
+        Optional<Book> optionalBook = ofNullable(bookRepository.findById(book.getId())
+                .orElseThrow(() -> new BookNotFoundException("The note was not found on the server")));
+        Book updateBook = optionalBook.get();
+        updateBook.setId(book.getId());
+        updateBook.setTitle(book.getTitle());
+        updateBook.setAuthor(book.getAuthor());
+        updateBook.setGenre(book.getGenre());
+        updateBook.setYear(book.getYear());
+        bookRepository.save(updateBook);
+
+        return HttpResponse.<Book>builder()
+                .books(singleton(updateBook))
+                .message("Book updated successfully")
                 .status(OK)
                 .statusCode(OK.value())
                 .build();

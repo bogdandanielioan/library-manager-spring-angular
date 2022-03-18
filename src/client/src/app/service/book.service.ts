@@ -44,6 +44,19 @@ export class BookService {
     )
     ;
   }
+  updateBook = (book: Book ,id:number) => {
+    book.id = id;
+    this.booksChanged.next(this.books.slice());
+    return <Observable<CustomHttpResponse>>
+      this.http.put<CustomHttpResponse>
+      (`${this.server}/books/update`, book)
+        .pipe(
+          tap(console.log),
+          catchError(this.handleError)
+        );
+  }
+
+
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     console.log(error);
@@ -59,7 +72,6 @@ export class BookService {
     }
     return throwError(errorMessage);
   }
-
 
 
 
