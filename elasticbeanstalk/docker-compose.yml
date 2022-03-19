@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   backend:
-    image: "bogdandanielioan/library-manager-spring-angular:18.3.2022.13.36.8"
+    image: "bogdandanielioan/library-manager-spring-angular:19.3.2022.7.35.18"
     ports:
       - "80:8080"
     restart: "always"
